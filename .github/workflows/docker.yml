@@ -20,7 +20,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner,, }}/devops-demo:latest .
+        run: |
+          owner_lower=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          docker build -t ghcr.io/$owner_lower/devops-demo:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository_owner,, }}/devops-demo:latest
+        run: |
+          owner_lower=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          docker push ghcr.io/$owner_lower/devops-demo:latest
